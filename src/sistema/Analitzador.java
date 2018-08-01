@@ -63,8 +63,13 @@ public class Analitzador {
 		Vector <String>Partides=getPartides(Nom);
 		Escriptor escr=new Escriptor("dades");
 		Escriptor escr2=new Escriptor("temps");
+		
+		
 		int guanyades=0, jugades=0;
 		double aux1, aux2, aux3;
+		long inici = System.nanoTime(), fi;
+		
+		
 		for(String i: Partides){
 			TimeUnit.SECONDS.sleep(2);
 			//System.out.println(toDate(getDate(i)));
@@ -79,6 +84,10 @@ public class Analitzador {
 			aux3 = aux1/aux2;
 			escr.write(""+String.format("%.4f", aux3));
 			escr2.write(""+getDate(i));
+			fi = System.nanoTime();
+			
+			System.out.print((((fi-inici)*Partides.size()/jugades)-(fi-inici))/1000000000);
+			System.out.println(" segons restants");
 		}
 		
 		aux1 = guanyades;
