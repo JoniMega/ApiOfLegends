@@ -1,5 +1,6 @@
 package sistema;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
@@ -32,85 +33,95 @@ public class Analitzador {
 		JSONObject jugador;
 		for (int i = 0; i < obj.getJSONArray("participantIdentities").length(); i++) {
 			jugador = (JSONObject) obj.getJSONArray("participantIdentities").get(i);
-			if(jugador.getJSONObject("player").getString("summonerName").equals(Nom.replace(" ", "%20"))){
-				if(i<5){
+			if (jugador.getJSONObject("player").getString("summonerName").equals(Nom.replace(" ", "%20"))) {
+				if (i < 5) {
 					return blauVictoria;
-				}else{
+				} else {
 					return !blauVictoria;
 				}
 			}
 		}
 		return false;
 	}
-	
-	public Vector getPartides(String Nom) throws Exception{
-		Vector <String>Partides=new Vector<String>();
+
+	public Vector<String> getPartides(String Nom) throws Exception {
+		Vector<String> Partides = new Vector<String>();
 		String info = this.in.llegirPartides(getIdJugador(Nom));
 		JSONArray partides = new JSONObject(info).getJSONArray("matches");
-		for (int i = 0; i< partides.length();i++){
-			Partides.addElement(""+((JSONObject)partides.get(i)).getLong("gameId"));
+		for (int i = 0; i < partides.length(); i++) {
+			Partides.addElement("" + ((JSONObject) partides.get(i)).getLong("gameId"));
 		}
 		return Partides;
 	}
-	
-	public String getIdJugador(String Nom) throws Exception{
+
+	public String getIdJugador(String Nom) throws Exception {
 		String info = this.in.llegirUsuari(Nom);
-		JSONObject jugador = new JSONObject(info);		
-		return ""+jugador.getLong("accountId");
+		JSONObject jugador = new JSONObject(info);
+		return "" + jugador.getLong("accountId");
 	}
-	
-	public double getWinRate(String Nom) throws Exception{
-		Vector <String>Partides=getPartides(Nom);
-		Escriptor escr=new Escriptor("dades");
-		Escriptor escr2=new Escriptor("temps");
-		
-		
-		int guanyades=0, jugades=0;
+
+	public double getWinRate(String Nom) throws Exception {
+		Vector<String> Partides = getPartides(Nom);
+		Escriptor escr = new Escriptor("dades");
+		Escriptor escr2 = new Escriptor("temps");
+
+		int guanyades = 0, jugades = 0;
 		double aux1, aux2, aux3;
-		long inici = System.nanoTime(), fi;
-		
-		
-		for(String i: Partides){
-			TimeUnit.SECONDS.sleep(2);
-			//System.out.println(toDate(getDate(i)));
-			System.out.println((jugades+1)+"/"+Partides.size());
-			if(getVictoria(Nom,i)){
-				guanyades++;
+		long inici = System.nanoTime(), fi = 0;
+		boolean trobat = false;
+
+		for (String i : Partides) {
+			TimeUnit.SECONDS.sleep(1);
+			// System.out.println(toDate(getDate(i)));
+			System.out.println((jugades + 1) + "/" + Partides.size());
+			trobat = false;
+			while (!trobat) {
+				try {
+					if (getVictoria(Nom, i)) {
+						guanyades++;
+					}
+					trobat=true;
+				} catch (Exception e) {
+					TimeUnit.SECONDS.sleep(1);
+				}
 			}
-			jugades++;
 			
+			jugades++;
+
 			aux1 = guanyades;
 			aux2 = jugades;
-			aux3 = aux1/aux2;
-			escr.write(""+String.format("%.4f", aux3));
-			escr2.write(""+getDate(i));
+			aux3 = aux1 / aux2;
+			// escr.write(""+String.format("%.4f", aux3));
+			// escr2.write(""+getDate(i));
 			fi = System.nanoTime();
-			
-			System.out.print((((fi-inici)*Partides.size()/jugades)-(fi-inici))/1000000000);
+
+			System.out.print((((fi - inici) * Partides.size() / jugades) - (fi - inici)) / 1000000000);
 			System.out.println(" segons restants");
 		}
-		
+
 		aux1 = guanyades;
 		aux2 = jugades;
-		
-		System.out.println(guanyades+" "+jugades);
-		return aux1/aux2;
+		System.out.print("Temps total: ");
+		System.out.println((fi - inici)/ 1000000000);
+		System.out.println(guanyades + " " + jugades);
+		return aux1 / aux2;
 	}
-	
-	public long getDate(String idPartida) throws Exception{
+
+	public long getDate(String idPartida) throws Exception {
 		String info = this.in.llegirPartida(idPartida);
 		JSONObject obj = new JSONObject(info);
-		
-		
+
 		return obj.getLong("gameCreation");
 	}
-	
-	private String toDate(long date){
+
+	private String toDate(long date) {
 		Calendar mydate = Calendar.getInstance();
 		mydate.setTimeInMillis(date);
-		//System.out.print(mydate.get(Calendar.DAY_OF_MONTH)+"/"+mydate.get(Calendar.MONTH)+"/"+mydate.get(Calendar.YEAR)+" - ");
-		
-		return mydate.get(Calendar.DAY_OF_MONTH)+"/"+(mydate.get(Calendar.MONTH)+1)+"/"+mydate.get(Calendar.YEAR)+" - ";
+		// System.out.print(mydate.get(Calendar.DAY_OF_MONTH)+"/"+mydate.get(Calendar.MONTH)+"/"+mydate.get(Calendar.YEAR)+"
+		// - ");
+
+		return mydate.get(Calendar.DAY_OF_MONTH) + "/" + (mydate.get(Calendar.MONTH) + 1) + "/"
+				+ mydate.get(Calendar.YEAR) + " - ";
 	}
 
 }

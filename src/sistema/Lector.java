@@ -23,12 +23,12 @@ public class Lector {
 			str = in.readLine();
 			in.close();
 		} catch (MalformedURLException e) {
-			throw new Exception("Error 1: Error de connecció");
+			throw e;
 		} catch (IOException e) {
-			throw new Exception("Error 3: Error de I/O - "+e.getMessage());
+			throw e;
 		}
 		if (str == null) {
-			throw new Exception("Error 2: Lectura Nul·la");
+			throw new IllegalArgumentException("Lectura Nul·la");
 		}
 		return str;
 	}
@@ -41,12 +41,12 @@ public class Lector {
 			str = in.readLine();
 			in.close();
 		} catch (MalformedURLException e) {
-			throw new Exception("Error 1: Error de connecció");
+			throw e;
 		} catch (IOException e) {
-			throw new Exception("Error 3: Error de I/O - "+e.getMessage());
+			throw e;
 		}
 		if (str == null) {
-			throw new Exception("Error 2: Lectura Nul·la");
+			throw new IllegalArgumentException("Lectura Nul·la");
 		}
 		return str;
 	}
@@ -59,12 +59,12 @@ public class Lector {
 			str = in.readLine();
 			in.close();
 		} catch (MalformedURLException e) {
-			throw new Exception("Error 1: Error de connecció");
+			throw e;
 		} catch (IOException e) {
-			throw new Exception("Error 3: Error de I/O - "+e.getMessage());
+			throw e;
 		}
 		if (str == null) {
-			throw new Exception("Error 2: Lectura Nul·la");
+			throw new IllegalArgumentException("Lectura Nul·la");
 		}
 		return str;
 	}

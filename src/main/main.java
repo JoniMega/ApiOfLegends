@@ -3,11 +3,11 @@ package main;
 import sistema.Analitzador;
 import sistema.Lector;
 
-public class main {
+public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String api = "RGAPI-9ceca4d0-49f6-4fad-803b-28401ef4f881";
+		String api = System.getenv().get("API_LOL-KEY");
 		Lector l = new Lector(api);
 		Analitzador an = new Analitzador(api);
 		try {
