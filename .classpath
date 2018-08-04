@@ -11,7 +11,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Joni/workspace/ApiLol 2.0/gson-2.8.5-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Joni/workspace/LeagueOfApi/json-20140107.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
