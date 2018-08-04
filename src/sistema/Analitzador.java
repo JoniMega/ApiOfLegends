@@ -1,13 +1,16 @@
 package sistema;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import interficie.GraphPanel;
 import suport.Escriptor;
 
 public class Analitzador {
@@ -64,7 +67,7 @@ public class Analitzador {
 		Vector<String> Partides = getPartides(Nom);
 		Escriptor escr = new Escriptor("dades");
 		Escriptor escr2 = new Escriptor("temps");
-
+		List<Double> llista = new ArrayList<>();
 		int guanyades = 0, jugades = 0;
 		double aux1, aux2, aux3;
 		long inici = System.nanoTime(), fi = 0;
@@ -94,7 +97,8 @@ public class Analitzador {
 			// escr.write(""+String.format("%.4f", aux3));
 			// escr2.write(""+getDate(i));
 			fi = System.nanoTime();
-
+			llista.add(aux3*100);
+			GraphPanel.updateGui(llista);
 			System.out.print((((fi - inici) * Partides.size() / jugades) - (fi - inici)) / 1000000000);
 			System.out.println(" segons restants");
 		}
